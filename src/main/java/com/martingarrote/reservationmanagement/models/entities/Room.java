@@ -40,6 +40,20 @@ public class Room implements AuditInterface {
 
     private Timestamp updatedAt;
 
+    public Room(long id, int number, String description, double size, double pricePerMonth, boolean busy, boolean active, String createdBy, Timestamp createdAt, String updatedBy, Timestamp updatedAt) {
+        this.id = id;
+        this.number = number;
+        this.description = description;
+        this.size = size;
+        this.pricePerMonth = pricePerMonth;
+        this.busy = busy;
+        this.active = active;
+        this.createdBy = createdBy;
+        this.createdAt = createdAt;
+        this.updatedBy = updatedBy;
+        this.updatedAt = updatedAt;
+    }
+
     public long getId() {
         return id;
     }

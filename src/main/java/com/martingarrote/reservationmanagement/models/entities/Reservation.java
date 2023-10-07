@@ -49,6 +49,23 @@ public class Reservation implements AuditInterface {
 
     private Timestamp updatedAt;
 
+    public Reservation(long id, String code, Customer customer, Room reservedRoom, double reservationPrice, String description, int duration, LocalDate startDate, LocalDate endDate, boolean active, String createdBy, Timestamp createdAt, String updatedBy, Timestamp updatedAt) {
+        this.id = id;
+        this.code = code;
+        this.customer = customer;
+        this.reservedRoom = reservedRoom;
+        this.reservationPrice = reservationPrice;
+        this.description = description;
+        this.duration = duration;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.active = active;
+        this.createdBy = createdBy;
+        this.createdAt = createdAt;
+        this.updatedBy = updatedBy;
+        this.updatedAt = updatedAt;
+    }
+
     public long getId() {
         return id;
     }
