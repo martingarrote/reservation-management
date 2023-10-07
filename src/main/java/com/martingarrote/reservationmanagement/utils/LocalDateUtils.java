@@ -23,4 +23,8 @@ public class LocalDateUtils {
         return LocalDate.now().plusMonths(months);
     }
 
+    public static int getAgeByDateOfBirth(LocalDate dateOfBirth) {
+        return dateOfBirth.until(LocalDate.now()).getYears();
+    }
+
 }
