@@ -69,6 +69,16 @@ public class ReservationService {
         return reservationDTOS;
     }
 
+    public List<ReservationDTO> findByRoom(Long id) {
+        List<ReservationDTO> reservationDTOS = reservationRepository
+                .findByReservedRoomId(id)
+                .stream()
+                .map(reservation -> mapper.map(reservation, ReservationDTO.class))
+                .toList();
+
+        return reservationDTOS;
+    }
+
     public boolean deleteById(Long id) {
         if (reservationRepository.existsById(id)) {
             reservationRepository.deleteById(id);

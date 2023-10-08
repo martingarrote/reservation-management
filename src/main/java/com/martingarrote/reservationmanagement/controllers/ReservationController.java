@@ -103,6 +103,22 @@ public class ReservationController {
         return ResponseEntity.ok(reservations);
     }
 
+    @Operation(description = "Get the reservations of a determined room, base in the given ID", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get the reservations with given room id"),
+            @ApiResponse(responseCode = "404", description = "Not found a reservation with given room id")
+    })
+    @GetMapping(value = "/room/{id}")
+    public ResponseEntity<List<ReservationDTO>> findByRoom(@PathVariable Long id) {
+        List<ReservationDTO> reservations = service.findByRoom(id);
+
+        if (reservations.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(reservations);
+    }
+
     @Operation(description = "Update a reservation based in given ID", method = "PUT")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Update the reservation"),

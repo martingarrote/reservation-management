@@ -17,4 +17,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> search(@Param("active") Boolean active, @Param("endsIn") LocalDate endsIn);
 
     List<Reservation> findByCustomerId(Long customerId);
+
+
+    List<Reservation> findByReservedRoomId(Long roomId);
 }
