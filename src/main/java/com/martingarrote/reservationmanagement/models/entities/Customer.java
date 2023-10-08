@@ -35,16 +35,16 @@ public class Customer implements AuditInterface {
 
     private Timestamp updatedAt;
 
-    public Customer(long id, String name, LocalDate dateOfBirth, String cpf, String email, String createdBy, Timestamp createdAt, String updatedBy, Timestamp updatedAt) {
+    public Customer() {
+
+    }
+
+    public Customer(long id, String name, LocalDate dateOfBirth, String cpf, String email) {
         this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.cpf = cpf;
         this.email = email;
-        this.createdBy = createdBy;
-        this.createdAt = createdAt;
-        this.updatedBy = updatedBy;
-        this.updatedAt = updatedAt;
     }
 
     public long getId() {
