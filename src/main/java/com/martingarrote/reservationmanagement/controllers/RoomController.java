@@ -113,13 +113,17 @@ public class RoomController {
             @ApiResponse(responseCode = "404", description = "Not found a room with given id")
     })
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        boolean serviceReturn = service.deleteById(id);
+    public ResponseEntity<?> delete(@PathVariable Long id) throws Exception {
+        try {
+            boolean serviceReturn = service.deleteById(id);
 
-        if (serviceReturn) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
+            if (serviceReturn) {
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 }

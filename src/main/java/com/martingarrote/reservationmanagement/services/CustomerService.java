@@ -2,7 +2,9 @@ package com.martingarrote.reservationmanagement.services;
 
 import com.martingarrote.reservationmanagement.models.dtos.CustomerDTO;
 import com.martingarrote.reservationmanagement.models.entities.Customer;
+import com.martingarrote.reservationmanagement.models.entities.Reservation;
 import com.martingarrote.reservationmanagement.repositories.CustomerRepository;
+import com.martingarrote.reservationmanagement.repositories.ReservationRepository;
 import com.martingarrote.reservationmanagement.utils.AuditUtils;
 import com.martingarrote.reservationmanagement.utils.LocalDateUtils;
 import org.modelmapper.ModelMapper;
@@ -12,9 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.martingarrote.reservationmanagement.consts.ExceptionConsts.*;
 import static com.martingarrote.reservationmanagement.consts.ExceptionConsts.CustomerExceptions.AGE_SHOULD_BIGGER_THAN_EIGHTEEN;
-import static com.martingarrote.reservationmanagement.consts.ExceptionConsts.INSERT_ERROR;
-import static com.martingarrote.reservationmanagement.consts.ExceptionConsts.UPDATE_ERROR;
 
 @Service
 public class CustomerService {
@@ -25,11 +26,14 @@ public class CustomerService {
     @Autowired
     ModelMapper mapper;
 
+    @Autowired
+    ReservationRepository reservationRepository;
+
     public List<CustomerDTO> listAll() {
-        List<CustomerDTO> costumersDTO = customerRepository.findAll().stream()
+        List<CustomerDTO> customersDTO = customerRepository.findAll().stream()
                 .map(customer -> mapper.map(customer, CustomerDTO.class)).toList();
 
-        return costumersDTO;
+        return customersDTO;
     }
 
     public CustomerDTO findById(Long id) {
@@ -43,13 +47,17 @@ public class CustomerService {
         return customerDTO;
     }
 
-    public boolean deleteById(Long id) {
-        if (customerRepository.existsById(id)) {
-            customerRepository.deleteById(id);
-            return true;
-        } else {
+    public boolean deleteById(Long id) throws Exception {
+        if (!customerRepository.existsById(id)) {
             return false;
         }
+
+        if (!reservationRepository.findByCustomerId(id).isEmpty()) {
+            throw new Exception(UNABLE_TO_DELETE);
+        }
+
+        customerRepository.deleteById(id);
+        return true;
     }
 
     public Long create(CustomerDTO customerDTO) throws Exception {

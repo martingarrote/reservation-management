@@ -2,6 +2,7 @@ package com.martingarrote.reservationmanagement.services;
 
 import com.martingarrote.reservationmanagement.models.dtos.RoomDTO;
 import com.martingarrote.reservationmanagement.models.entities.Room;
+import com.martingarrote.reservationmanagement.repositories.ReservationRepository;
 import com.martingarrote.reservationmanagement.repositories.RoomRepository;
 import com.martingarrote.reservationmanagement.utils.AuditUtils;
 import org.modelmapper.ModelMapper;
@@ -11,8 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static com.martingarrote.reservationmanagement.consts.ExceptionConsts.INSERT_ERROR;
-import static com.martingarrote.reservationmanagement.consts.ExceptionConsts.UPDATE_ERROR;
+import static com.martingarrote.reservationmanagement.consts.ExceptionConsts.*;
 
 @Service
 public class RoomService {
@@ -22,6 +22,9 @@ public class RoomService {
 
     @Autowired
     ModelMapper mapper;
+
+    @Autowired
+    ReservationRepository reservationRepository;
 
     public List<RoomDTO> listAll() {
         List<RoomDTO> roomsDTO = roomRepository.findAll().stream()
@@ -48,13 +51,18 @@ public class RoomService {
         return roomsDTO;
     }
 
-    public boolean deleteById(Long id) {
-        if (roomRepository.existsById(id)) {
-            roomRepository.deleteById(id);
-            return true;
-        } else {
+    public boolean deleteById(Long id) throws Exception {
+
+        if (!roomRepository.existsById(id)) {
             return false;
         }
+
+        if (!reservationRepository.findByReservedRoomId(id).isEmpty()) {
+            throw new Exception(UNABLE_TO_DELETE);
+        }
+
+        roomRepository.deleteById(id);
+        return true;
     }
 
     public Long create(RoomDTO roomDTO) throws Exception {

@@ -4,6 +4,7 @@ public class ExceptionConsts {
 
     public final static String INSERT_ERROR = "Unable to insert";
     public final static String UPDATE_ERROR = "Unable to update";
+    public final static String UNABLE_TO_DELETE = "Unable to delete because this entity is associated with a Reservation entity.";
 
     public static class CustomerExceptions {
         public final static String AGE_SHOULD_BIGGER_THAN_EIGHTEEN = "The customers age should be 18 or older for them to be inserted";
