@@ -112,8 +112,6 @@ public class RoomService {
 
         AuditUtils auditUtils = new AuditUtils();
 
-        // business rules and verifications
-
         try {
             Room room = mapper.map(roomDTO, Room.class);
 

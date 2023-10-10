@@ -2,7 +2,6 @@ package com.martingarrote.reservationmanagement.services;
 
 import com.martingarrote.reservationmanagement.models.dtos.CustomerDTO;
 import com.martingarrote.reservationmanagement.models.entities.Customer;
-import com.martingarrote.reservationmanagement.models.entities.Reservation;
 import com.martingarrote.reservationmanagement.repositories.CustomerRepository;
 import com.martingarrote.reservationmanagement.repositories.ReservationRepository;
 import com.martingarrote.reservationmanagement.utils.AuditUtils;
@@ -14,8 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static com.martingarrote.reservationmanagement.consts.ExceptionConsts.*;
 import static com.martingarrote.reservationmanagement.consts.ExceptionConsts.CustomerExceptions.AGE_SHOULD_BIGGER_THAN_EIGHTEEN;
+import static com.martingarrote.reservationmanagement.consts.ExceptionConsts.*;
 
 @Service
 public class CustomerService {

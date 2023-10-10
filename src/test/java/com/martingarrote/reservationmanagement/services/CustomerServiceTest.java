@@ -2,8 +2,10 @@ package com.martingarrote.reservationmanagement.services;
 
 import com.martingarrote.reservationmanagement.models.dtos.CustomerDTO;
 import com.martingarrote.reservationmanagement.models.entities.Customer;
+import com.martingarrote.reservationmanagement.models.entities.Reservation;
 import com.martingarrote.reservationmanagement.repositories.CustomerRepository;
-import jakarta.validation.constraints.Null;
+import com.martingarrote.reservationmanagement.repositories.ReservationRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,7 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.martingarrote.reservationmanagement.consts.ExceptionConsts.INSERT_ERROR;
+import static com.martingarrote.reservationmanagement.consts.ExceptionConsts.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.Assert.assertArrayEquals;
@@ -27,6 +29,9 @@ public class CustomerServiceTest {
 
     @Mock
     CustomerRepository repository;
+
+    @Mock
+    ReservationRepository reservationRepository;
 
     @Mock
     ModelMapper mapper;
@@ -59,7 +64,6 @@ public class CustomerServiceTest {
 
         Throwable exception = catchThrowable(() -> service.save(customerDTO));
 
-        System.out.println(exception.toString());
         assertThat(exception.getMessage()).isEqualTo(INSERT_ERROR);
     }
 
@@ -108,15 +112,15 @@ public class CustomerServiceTest {
         assertArrayEquals(expectedCustomersDTO.toArray(), customersDTO.toArray());
     }
 
-    @Test
+    @Test()
     public void listAll_ShouldNotListAnyCustomer() {
-        when(repository.findAll()).thenReturn(null);
+        List<Customer> emptyCustomerList = repository.findAll();
+        when(repository.findAll()).thenReturn(emptyCustomerList);
 
         List<CustomerDTO> returnedCustomersDTO = service.listAll();
 
-        assertThat(returnedCustomersDTO).isNull();
+        assertArrayEquals(emptyCustomerList.toArray(), returnedCustomersDTO.toArray());
     }
-
 
     @Test
     public void findById_ShouldGet() {
@@ -143,6 +147,77 @@ public class CustomerServiceTest {
         assertThat(returnedCustomerDTO).isNull();
     }
 
+    @Test
+    public void deleteById_ShouldDelete() throws Exception {
+        Long customerId = 1L;
+        when(repository.existsById(customerId)).thenReturn(true);
+
+        boolean returned = service.deleteById(customerId);
+
+        assertThat(returned).isTrue();
+    }
+
+    @Test
+    public void deleteById_ShouldNotDelete_NotFound() throws Exception {
+        Long customerId = 1L;
+        when(repository.existsById(customerId)).thenReturn(false);
+
+        boolean returned = service.deleteById(customerId);
+
+        assertThat(returned).isFalse();
+    }
+
+    @Test
+    public void deleteById_ShouldNotDelete_UnableToDeleteException() throws Exception {
+        Long customerId = 1L;
+        Customer customer = createCustomerEntity();
+        Reservation reservation = new Reservation(1, "ABC123", customer, null, 100.0,
+                "Test reservation", 3, LocalDate.now(),
+                LocalDate.now().plusDays(3), true);
+        when(repository.existsById(customerId)).thenReturn(true);
+        when(reservationRepository.findByCustomerId(customerId)).thenReturn(List.of(reservation));
+
+        Throwable exception = catchThrowable(() -> service.deleteById(customerId));
+
+        assertThat(exception.getMessage()).isEqualTo(UNABLE_TO_DELETE);
+    }
+
+    @Test
+    public void update_ShouldUpdate() throws Exception {
+        Long  customerId = 1L;
+        Customer customerToUpdate = createCustomerEntity();
+        CustomerDTO customerDTO = createCustomerDTO();
+
+        when(repository.findById(customerId)).thenReturn(Optional.of(customerToUpdate));
+
+        Long returnedId = service.update(customerDTO, customerId);
+
+        assertThat(returnedId).isEqualTo(customerId);
+
+    }
+
+    @Test
+    public void update_ShouldNotUpdate_NotFound() throws Exception {
+        Long customerId = 1L;
+        CustomerDTO customerDTO = createCustomerDTO();
+
+        var returnedByService = service.update(customerDTO, customerId);
+
+        assertThat(returnedByService).isNull();
+    }
+
+    @Test
+    public void update_ShouldNotUpdate_UpdateError() throws Exception {
+        Long customerId = 1L;
+        CustomerDTO customerDTO = createCustomerDTO();
+
+        when(repository.existsById(customerId)).thenReturn(true);
+
+        Throwable exception = catchThrowable(() -> service.update(customerDTO, customerId));
+
+        assertThat(exception.getMessage()).isEqualTo(UPDATE_ERROR);
+    }
+
     public Customer createCustomerEntity() {
         LocalDate dateOfBirth = LocalDate.of(1990, 10, 5);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -155,5 +230,4 @@ public class CustomerServiceTest {
 
         return new CustomerDTO(1L, "Jose", dateOfBirth, "12345678910", "email@gmail.com");
     }
-
 }
