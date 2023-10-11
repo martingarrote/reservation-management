@@ -52,7 +52,7 @@ public class RoomController {
         return ResponseEntity.ok(roomsDTO);
     }
 
-    @Operation(description = "Get a room based in ID", method = "GET")
+    @Operation(description = "Get a room based in given ID", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get a room with given id"),
             @ApiResponse(responseCode = "404", description = "Not found a room with given id")
@@ -71,7 +71,7 @@ public class RoomController {
     @Operation(description = "Get all rooms based in busy status", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get rooms with expected busy status"),
-            @ApiResponse(responseCode = "404", description = "Not found any room with expected busy status")
+            @ApiResponse(responseCode = "404", description = "Not found any room with the determined busy status")
     })
     @GetMapping(value = "/status")
     public ResponseEntity<Object> findByBusy(@RequestParam("busy") boolean busy) {
@@ -110,7 +110,8 @@ public class RoomController {
     @Operation(description = "Delete a room based in given ID", method = "DELETE")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Delete a room with given id"),
-            @ApiResponse(responseCode = "404", description = "Not found a room with given id")
+            @ApiResponse(responseCode = "404", description = "Not found a room with given id"),
+            @ApiResponse(responseCode = "409", description = "Probably the room is associated with a reservation")
     })
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) throws Exception {

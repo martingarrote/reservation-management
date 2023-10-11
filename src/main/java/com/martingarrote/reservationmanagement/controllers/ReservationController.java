@@ -52,7 +52,7 @@ public class ReservationController {
         return ResponseEntity.ok(reservationDTOS);
     }
 
-    @Operation(description = "Get a reservation based in ID", method = "GET")
+    @Operation(description = "Get a reservation based in given ID", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get a reservation with given id"),
             @ApiResponse(responseCode = "404", description = "Not found a reservation with given id")
@@ -68,10 +68,10 @@ public class ReservationController {
         return ResponseEntity.ok(reservation);
     }
 
-    @Operation(description = "Get the reservations based ", method = "GET")
+    @Operation(description = "Get the reservations based in active status and remaining months", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get the reservations with customized preferences of search"),
-            @ApiResponse(responseCode = "404", description = "Not found any reservation with determinate preferences")
+            @ApiResponse(responseCode = "404", description = "Not found any reservation with determined preferences")
     })
     @GetMapping(value = "/search")
     public ResponseEntity<List<ReservationDTO>> search(

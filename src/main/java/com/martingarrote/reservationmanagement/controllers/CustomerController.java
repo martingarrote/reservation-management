@@ -53,7 +53,7 @@ public class CustomerController {
         return ResponseEntity.ok(costumersDTO);
     }
 
-    @Operation(description = "Get a customer based in ID", method = "GET")
+    @Operation(description = "Get a customer based in given ID", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get a customer with given id"),
             @ApiResponse(responseCode = "404", description = "Not found a customer with given id")
@@ -95,10 +95,11 @@ public class CustomerController {
     @Operation(description = "Delete a customer based in given ID", method = "DELETE")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Delete a customer with given id"),
-            @ApiResponse(responseCode = "404", description = "Not found a customer with given id")
+            @ApiResponse(responseCode = "404", description = "Not found a customer with given id"),
+            @ApiResponse(responseCode = "409", description = "Probably the customer is associated with a reservation")
     })
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) throws Exception {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         try {
             boolean serviceReturn = service.deleteById(id);
 
