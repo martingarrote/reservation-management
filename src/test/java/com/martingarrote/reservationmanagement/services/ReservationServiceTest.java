@@ -228,13 +228,13 @@ public class ReservationServiceTest {
         List<ReservationDTO> expectedReservationDTO = List.of();
         when(
                 repository
-                        .findByCustomerId(defaultId+1)
+                        .findByCustomerId(defaultId + 1)
                         .stream()
                         .map(reservation -> mapper.map(reservation, ReservationDTO.class))
                         .toList()
         ).thenReturn(expectedReservationDTO);
 
-        List<ReservationDTO> returnedReservationsDTO = service.findByCustomer(defaultId+1);
+        List<ReservationDTO> returnedReservationsDTO = service.findByCustomer(defaultId + 1);
 
         assertThatList(returnedReservationsDTO).isEmpty();
     }
@@ -263,13 +263,13 @@ public class ReservationServiceTest {
         List<ReservationDTO> expectedReservationDTO = List.of();
         when(
                 repository
-                        .findByReservedRoomId(defaultId+1)
+                        .findByReservedRoomId(defaultId + 1)
                         .stream()
                         .map(reservation -> mapper.map(reservation, ReservationDTO.class))
                         .toList()
         ).thenReturn(expectedReservationDTO);
 
-        List<ReservationDTO> returnedReservationsDTO = service.findByRoom(defaultId+1);
+        List<ReservationDTO> returnedReservationsDTO = service.findByRoom(defaultId + 1);
 
         assertThatList(returnedReservationsDTO).isEmpty();
     }
@@ -321,16 +321,6 @@ public class ReservationServiceTest {
 
         assertThat(exception.getMessage()).isEqualTo(UPDATE_ERROR);
     }
-
-
-
-
-
-
-
-
-
-
 
 
     public Reservation createReservationEntity() {
