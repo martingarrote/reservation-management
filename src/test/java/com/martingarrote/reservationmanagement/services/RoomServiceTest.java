@@ -63,7 +63,7 @@ public class RoomServiceTest {
         assertThat(id).isEqualTo(defaultId);
     }
 
-    @Test()
+    @Test
     public void save_ShouldNotSave() throws Exception {
         RoomDTO roomDTO = createRoomDTO();
 

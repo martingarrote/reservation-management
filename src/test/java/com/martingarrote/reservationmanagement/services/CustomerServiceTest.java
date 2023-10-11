@@ -39,6 +39,13 @@ public class CustomerServiceTest {
     @InjectMocks
     CustomerService service;
 
+    Long defaultId;
+
+    @Before
+    public void setUp() {
+        this.defaultId = 1L;
+    }
+
     @Test
     public void save_ShouldSave() throws Exception {
         // Arrange
@@ -55,7 +62,7 @@ public class CustomerServiceTest {
         verify(mapper).map(customerDTO, Customer.class);
         verify(repository, times(1)).save(customer);
         verifyNoMoreInteractions(repository);
-        assertThat(id).isEqualTo(1L);
+        assertThat(id).isEqualTo(defaultId);
     }
 
     @Test()
@@ -73,7 +80,6 @@ public class CustomerServiceTest {
         customerDTO.setDateOfBirth(LocalDate.now());
 
         service.save(customerDTO);
-
     }
 
     @Test
@@ -124,45 +130,41 @@ public class CustomerServiceTest {
 
     @Test
     public void findById_ShouldGet() {
-        Long id = 1L;
         Customer customer = createCustomerEntity();
         CustomerDTO returnedCustomerDTO = mapper.map(customer, CustomerDTO.class);
 
-        when(repository.findById(id)).thenReturn(Optional.of(customer));
+        when(repository.findById(defaultId)).thenReturn(Optional.of(customer));
         when(mapper.map(customer, CustomerDTO.class)).thenReturn(returnedCustomerDTO);
 
 
-        CustomerDTO expectedCustomerDTO = service.findById(id);
+        CustomerDTO expectedCustomerDTO = service.findById(defaultId);
 
         assertThat(expectedCustomerDTO).isEqualTo(returnedCustomerDTO);
     }
 
     @Test
     public void findById_ShouldNotGetAnyCustomer() {
-        Long id = 1L;
-        when(repository.findById(id)).thenReturn(Optional.empty());
+        when(repository.findById(defaultId)).thenReturn(Optional.empty());
 
-        CustomerDTO returnedCustomerDTO = service.findById(id);
+        CustomerDTO returnedCustomerDTO = service.findById(defaultId);
 
         assertThat(returnedCustomerDTO).isNull();
     }
 
     @Test
     public void deleteById_ShouldDelete() throws Exception {
-        Long customerId = 1L;
-        when(repository.existsById(customerId)).thenReturn(true);
+        when(repository.existsById(defaultId)).thenReturn(true);
 
-        boolean returned = service.deleteById(customerId);
+        boolean returned = service.deleteById(defaultId);
 
         assertThat(returned).isTrue();
     }
 
     @Test
     public void deleteById_ShouldNotDelete_NotFound() throws Exception {
-        Long customerId = 1L;
-        when(repository.existsById(customerId)).thenReturn(false);
+        when(repository.existsById(defaultId)).thenReturn(false);
 
-        boolean returned = service.deleteById(customerId);
+        boolean returned = service.deleteById(defaultId);
 
         assertThat(returned).isFalse();
     }
