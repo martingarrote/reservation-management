@@ -186,7 +186,7 @@ public class CustomerServiceTest {
 
     @Test
     public void update_ShouldUpdate() throws Exception {
-        Long  customerId = 1L;
+        Long customerId = 1L;
         Customer customerToUpdate = createCustomerEntity();
         CustomerDTO customerDTO = createCustomerDTO();
 
