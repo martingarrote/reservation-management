@@ -44,13 +44,13 @@ public class CustomerController {
     })
     @GetMapping
     public ResponseEntity<List<CustomerDTO>> listAll() {
-        List<CustomerDTO> costumersDTO = service.listAll();
+        List<CustomerDTO> customerDTOS = service.listAll();
 
-        if (costumersDTO.isEmpty()) {
+        if (customerDTOS.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(costumersDTO);
+        return ResponseEntity.ok(customerDTOS);
     }
 
     @Operation(description = "Get a customer based in given ID", method = "GET")
@@ -60,13 +60,13 @@ public class CustomerController {
     })
     @GetMapping(value = "/{id}")
     public ResponseEntity<Object> findById(@PathVariable Long id) {
-        CustomerDTO costumer = service.findById(id);
+        CustomerDTO customer = service.findById(id);
 
-        if (costumer == null) {
+        if (customer == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(costumer);
+        return ResponseEntity.ok(customer);
     }
 
     @Operation(description = "Update a customer based in given ID", method = "PUT")
@@ -76,9 +76,9 @@ public class CustomerController {
             @ApiResponse(responseCode = "400", description = "Bad request: any problem was occurred")
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody CustomerDTO costumer, @PathVariable Long id) throws Exception {
+    public ResponseEntity<?> update(@Valid @RequestBody CustomerDTO customer, @PathVariable Long id) throws Exception {
         try {
-            Long serviceReturn = service.update(costumer, id);
+            Long serviceReturn = service.update(customer, id);
 
             if (serviceReturn == null) {
                 return ResponseEntity.notFound().build();
