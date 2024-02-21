@@ -39,14 +39,14 @@ public class ReservationController {
     @Operation(description = "List all existing reservations", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List with all reservations"),
-            @ApiResponse(responseCode = "404", description = "Not found any reservation")
+            @ApiResponse(responseCode = "204", description = "Not found any reservation")
     })
     @GetMapping
     public ResponseEntity<List<ReservationDTO>> listAll() {
         List<ReservationDTO> reservationDTOS = service.listAll();
 
         if (reservationDTOS.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.ok(reservationDTOS);

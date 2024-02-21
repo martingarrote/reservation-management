@@ -66,12 +66,12 @@ public class RoomControllerTest {
     }
 
     @Test
-    public void listAll_StatusNotFound() {
+    public void listAll_StatusNoContent() {
         when(service.listAll()).thenReturn(List.of());
 
         ResponseEntity<?> response = controller.listAll();
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 
     @Test

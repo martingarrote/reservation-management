@@ -40,14 +40,14 @@ public class CustomerController {
     @Operation(description = "List all existing customers", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List with all customers"),
-            @ApiResponse(responseCode = "404", description = "Not found any customer")
+            @ApiResponse(responseCode = "204", description = "Not found any customer")
     })
     @GetMapping
     public ResponseEntity<List<CustomerDTO>> listAll() {
         List<CustomerDTO> customerDTOS = service.listAll();
 
         if (customerDTOS.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.ok(customerDTOS);

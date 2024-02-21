@@ -39,14 +39,14 @@ public class RoomController {
     @Operation(description = "List all existing rooms", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List with all rooms"),
-            @ApiResponse(responseCode = "404", description = "Not found any room")
+            @ApiResponse(responseCode = "204", description = "Not found any room")
     })
     @GetMapping
     public ResponseEntity<List<RoomDTO>> listAll() {
         List<RoomDTO> roomsDTO = service.listAll();
 
         if (roomsDTO.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.ok(roomsDTO);
