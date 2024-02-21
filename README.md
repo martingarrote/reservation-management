@@ -34,14 +34,8 @@ Projeto final do módulo de SpringBoot desenvolvido durante o programa de forma�
  - Disponível em:
 > http://localhost:8080/swagger-ui/index.html
 
-> https://reservation-management-production.up.railway.app/swagger-ui/index.html
-
 ## Requisições para as APIs do sistema
 - [Arquivo Insomnia](docs/Insomnia.json)
 
-### Variáveis de ambiente
- **_environment_develop**: Utilizar quando o sistema estiver sendo executado em localhost <br>
-> http://localhost:8080
-
- **_environment_production**: Utilizar quando estiver usando o sistema implantado no Railway <br>
-> https://reservation-management-production.up.railway.app
+### Variável de ambiente
+ **_environment_develop**: http://localhost:8080
